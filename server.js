@@ -52,6 +52,17 @@ app.post('/auth/google/callback', async (req, res) => {
   }
 });
 
+app.post('/auth/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      return res.status(500).json({ error: 'Failed to log out' });
+    }
+    res.clearCookie('connect.sid'); // Clear session cookie
+    res.status(200).json({ success: true });
+  });
+});
+
 // Sample API route for dues information
 app.get('/api/dues', (req, res) => {
   res.json({
